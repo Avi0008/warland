@@ -14,5 +14,8 @@ services:
       - key: HOST
         value: 0.0.0.0
       - key: DATA_DIR
-        value: /tmp/warland-data
-    
+        value: /var/data
+    disk:
+      name: warland-data
+      mountPath: /var/data
+      sizeGB: 1
