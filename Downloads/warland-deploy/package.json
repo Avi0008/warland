@@ -1,0 +1,21 @@
+{
+  "name": "warland",
+  "version": "1.0.0",
+  "description": "Realtime online property-trading board game inspired by classic rent-and-build mechanics.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "smoke": "node scripts/smoke.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "board-game",
+    "multiplayer",
+    "property-trading"
+  ],
+  "author": "",
+  "license": "MIT"
+}

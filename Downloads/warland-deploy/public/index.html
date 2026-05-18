@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WarLand</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="WarLand home">
+          <img src="/assets/circuit-mark.svg" alt="" />
+          <span>WarLand</span>
+        </a>
+        <div class="top-actions">
+          <nav class="topnav" aria-label="Main">
+            <button class="nav-button active" data-view="lobby">Lobby</button>
+            <button class="nav-button" data-view="rules">Rules</button>
+          </nav>
+          <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
+            <span class="theme-icon" aria-hidden="true">☀</span>
+            <span id="themeLabel">Light</span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section id="lobbyView" class="view lobby-view">
+          <div class="lobby-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Realtime board-night chaos</p>
+              <h1>Run the map. Tax the group chat.</h1>
+              <p>Spin up a room, send the link, buy cities, start auctions, stack rent, build hotels, and make every dice roll a little personal.</p>
+              <div class="hero-badges" aria-label="Game highlights">
+                <span>Instant rooms</span>
+                <span>Live deals</span>
+                <span>Rent traps</span>
+                <span>Jail drama</span>
+              </div>
+            </div>
+            <form id="createRoomForm" class="create-panel">
+              <div class="panel-heading">
+                <p class="eyebrow">Start a table</p>
+                <h2>New room, new rivalries.</h2>
+              </div>
+              <label>
+                Your name
+                <input id="creatorNameInput" type="text" maxlength="24" placeholder="Ava the Landlord" autocomplete="name" />
+              </label>
+              <label>
+                Your colour
+                <select id="creatorColorInput">
+                  <option value="#e84a5f">Crimson</option>
+                  <option value="#ff9f1c">Amber</option>
+                  <option value="#2ec4b6">Mint</option>
+                  <option value="#3a86ff">Blue</option>
+                  <option value="#8338ec">Violet</option>
+                  <option value="#06d6a0">Green</option>
+                </select>
+              </label>
+              <label>
+                Max players
+                <select id="maxPlayersInput">
+                  <option value="2">2 players</option>
+                  <option value="3">3 players</option>
+                  <option value="4">4 players</option>
+                  <option value="5">5 players</option>
+                  <option value="6" selected>6 players</option>
+                </select>
+              </label>
+              <button type="submit" class="primary-button">Create and join game</button>
+            </form>
+            <div class="hero-sticker sticker-one">Rent is due</div>
+            <div class="hero-sticker sticker-two">Auction heat</div>
+            <div class="hero-sticker sticker-three">Hotel era</div>
+          </div>
+
+          <section class="room-section">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Live tables</p>
+                <h2>Pick a room or pull up with a code.</h2>
+              </div>
+              <button id="refreshRoomsButton" class="icon-button" title="Refresh rooms" aria-label="Refresh rooms">↻</button>
+            </div>
+            <form id="joinCodeForm" class="join-code-form">
+              <input id="roomCodeInput" type="text" maxlength="20" placeholder="Enter room code or invite link" />
+              <button class="secondary-button" type="submit">Join by code</button>
+            </form>
+            <div id="roomsList" class="rooms-list"></div>
+          </section>
+        </section>
+
+        <section id="gameView" class="view game-view hidden">
+          <div class="game-layout">
+            <aside class="left-panel">
+              <div class="room-card">
+                <p class="eyebrow">Room</p>
+                <h2 id="roomTitle">WarLand</h2>
+                <div id="roomMeta" class="meta-line"></div>
+                <div id="invitePanel" class="invite-panel"></div>
+                <div id="joinPanel" class="join-panel">
+                  <input id="playerNameInput" type="text" maxlength="24" placeholder="Your player name" autocomplete="name" />
+                  <select id="playerColorInput" aria-label="Choose player colour">
+                    <option value="#e84a5f">Crimson</option>
+                    <option value="#ff9f1c">Amber</option>
+                    <option value="#2ec4b6">Mint</option>
+                    <option value="#3a86ff">Blue</option>
+                    <option value="#8338ec">Violet</option>
+                    <option value="#06d6a0">Green</option>
+                  </select>
+                  <button id="joinRoomButton" class="primary-button">Join room</button>
+                </div>
+                <button id="startGameButton" class="primary-button hidden">Start game</button>
+              </div>
+
+              <div id="playersPanel" class="players-panel"></div>
+              <div id="actionsPanel" class="actions-panel"></div>
+              <div id="auctionPanel" class="auction-panel hidden"></div>
+            </aside>
+
+            <section class="board-stage">
+              <div class="board-toolbar">
+                <div>
+                  <p class="eyebrow">Current turn</p>
+                  <h2 id="turnMessage">Waiting for players.</h2>
+                </div>
+                <div id="dicePanel" class="dice-panel"></div>
+              </div>
+              <div id="board" class="board" aria-label="Game board"></div>
+            </section>
+
+            <aside class="right-panel">
+              <div class="tabs" role="tablist" aria-label="Game panels">
+                <button class="tab active" data-panel="assets">Assets</button>
+                <button class="tab" data-panel="trade">Trade</button>
+                <button class="tab" data-panel="chat">Chat</button>
+                <button class="tab" data-panel="log">Log</button>
+              </div>
+              <div id="assetsPanel" class="side-panel"></div>
+              <div id="tradePanel" class="side-panel hidden"></div>
+              <div id="chatPanel" class="side-panel hidden">
+                <div id="chatList" class="chat-list"></div>
+                <form id="chatForm" class="chat-form">
+                  <input id="chatInput" type="text" maxlength="240" placeholder="Message the table" />
+                  <button class="icon-button" title="Send message" aria-label="Send message">➤</button>
+                </form>
+              </div>
+              <div id="logPanel" class="side-panel hidden">
+                <div id="gameLog" class="game-log"></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="rulesView" class="view rules-view hidden">
+          <div class="rules-grid">
+            <section>
+              <p class="eyebrow">How to play</p>
+              <h1>Rule the table without mercy.</h1>
+              <p>Every player starts with $1500. Roll dice, move around the circuit, buy unowned assets, pay rent to owners, and collect $200 when you pass Launch Square.</p>
+            </section>
+            <section class="rules-list">
+              <article><strong>Launch Square</strong><span>Collect $200 every time you pass or land on Launch Square.</span></article>
+              <article><strong>Doubles</strong><span>Roll doubles for a bonus roll. If you do not roll doubles, your turn ends automatically after purchases, auctions, or debt recovery are resolved. Three doubles sends you to Jail.</span></article>
+              <article><strong>Community Fund</strong><span>Draws a community card: grants, repairs, fees, gifts, or a Jail pass.</span></article>
+              <article><strong>Market News</strong><span>Draws a market card: move spaces, collect money, pay fees, or go to Jail.</span></article>
+              <article><strong>Taxes</strong><span>City Tax charges 10% of your net worth. Luxury Tax charges $100.</span></article>
+              <article><strong>Vacation Cash</strong><span>Tax payments collect on Vacation. A player who lands directly on Vacation takes the full pot.</span></article>
+              <article><strong>Rent</strong><span>City base rent doubles for the first three houses, triples from the third to fourth house, and doubles again for a hotel. Airport rent is $25 for one, $50 for two, $100 for three, and $200 for four.</span></article>
+              <article><strong>Jail</strong><span>Landing on Jail is Just Visiting. Go To Jail, cards, or three doubles send you inside. Pay $50 to leave immediately, or try for doubles for up to three turns.</span></article>
+              <article><strong>Auctions</strong><span>Declined purchases immediately go to a live room auction with a visible countdown for everyone.</span></article>
+              <article><strong>Sets</strong><span>Own a full color set to unlock houses and hotels.</span></article>
+              <article><strong>Buildings</strong><span>Build evenly across a full color set. Base rent up to $10 costs $50 per house or hotel, $11-$15 costs $100, $16-$20 costs $150, and above $20 costs $200.</span></article>
+              <article><strong>Utilities</strong><span>Electric Supply and Water Supply cost $150 each. Owning one charges 4x the dice roll; owning both charges 10x the dice roll.</span></article>
+              <article><strong>Liquidity</strong><span>A negative balance pauses your turn. Mortgage assets or make trades to recover, or declare bankruptcy.</span></article>
+              <article><strong>Deals</strong><span>Trade cash and properties with any rival.</span></article>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="roomTemplate">
+      <article class="room-row">
+        <div>
+          <h3></h3>
+          <p></p>
+        </div>
+        <button class="secondary-button">Open</button>
+      </article>
+    </template>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
